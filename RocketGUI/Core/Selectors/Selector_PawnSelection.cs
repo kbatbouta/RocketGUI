@@ -15,7 +15,7 @@ namespace RocketGUI
 
         protected override void DoSingleItem(Rect rect, Pawn item)
         {
-            RGUIUtility.ExecuteSafeGUIAction(() =>
+            GUIUtility.ExecuteSafeGUIAction(() =>
             {
                 Widgets.DrawHighlightIfMouseover(rect);
                 Widgets.DrawTextureFitted(rect.LeftPartPixels(50), PortraitsCache.Get(item, new Vector2(50, 50)), 1);
