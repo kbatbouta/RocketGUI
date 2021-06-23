@@ -96,7 +96,7 @@ namespace RocketGUI
                     {
                         Text.Font = GameFont.Tiny;
                         Text.Anchor = TextAnchor.MiddleRight;
-                        Widgets.Label(titleRect, expanded ? "Collapsed" : "Expanded");
+                        Widgets.Label(titleRect, !expanded ? "Collapsed" : "Expanded");
                     }
                 });
                 GUIUtility.ExecuteSafeGUIAction(() =>

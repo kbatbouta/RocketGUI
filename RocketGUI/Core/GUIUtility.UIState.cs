@@ -35,6 +35,7 @@ namespace RocketGUI
 
         private struct GUIState
         {
+            public GameFont gameFont;
             public FontState[] fonts;
             public Color color;
             public Color contentColor;
@@ -45,6 +46,7 @@ namespace RocketGUI
             {
                 return new GUIState()
                 {
+                    gameFont = Text.Font,
                     fonts = new FontState[3] {
                         new FontState(GameFont.Tiny),
                         new FontState(GameFont.Small),
@@ -53,7 +55,7 @@ namespace RocketGUI
                     color = GUI.color,
                     contentColor = GUI.contentColor,
                     backgroundColor = GUI.backgroundColor,
-                    wordWrap = Text.WordWrap
+                    wordWrap = Text.WordWrap,
                 };
             }
 
@@ -63,10 +65,12 @@ namespace RocketGUI
                 {
                     fonts[i].Restore();
                 }
+                Text.Font = gameFont;
                 GUI.color = color;
                 GUI.contentColor = contentColor;
                 GUI.backgroundColor = backgroundColor;
                 Text.WordWrap = wordWrap;
+                Text.Anchor = TextAnchor.UpperLeft;
             }
         }
 

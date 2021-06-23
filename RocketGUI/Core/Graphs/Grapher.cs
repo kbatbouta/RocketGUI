@@ -114,30 +114,10 @@ namespace RocketGUI
                 },
                 (rect) =>
                 {
-                    Rect buttonRect = new Rect(rect);
-                    buttonRect.width = buttonRect.height * 2 + 5;
-                    GUI.color = Color.cyan;
-                    if(scaleIndex > 0 && Widgets.ButtonImageFitted(buttonRect.RightPartPixels(buttonRect.height).ContractedBy(2), TexButton.Plus))
-                    {
-                        scaleIndex -= 1;
-                    }
-                    if(scaleIndex < Scales - 1 && Widgets.ButtonImageFitted(buttonRect.LeftPartPixels(buttonRect.height).ContractedBy(2), TexButton.Minus))
-                    {
-                        scaleIndex += 1;
-                    }
-                    GUI.color = Color.white;
-                    Text.Font = GameFont.Tiny;
-                    Text.Anchor = TextAnchor.MiddleLeft;
-                    rect.xMin += buttonRect.width;
-                    Widgets.Label(rect, $"[<color=gray>scale:{ScaleIndex}x</color>]");
-                }
-                ,
-                (rect) =>
-                {
                     if(mouseIsOver){
                         Text.Font = GameFont.Tiny;
                         Text.Anchor = TextAnchor.MiddleLeft;
-                        Widgets.Label(rect , $"Current:<color=cyan>{Math.Round(mouseIsOverPoint.y, 4)}</color>");
+                        Widgets.Label(rect , $"Current:(<color=cyan>{Math.Round(mouseIsOverPoint.t, 2)}</color>,<color=cyan>{Math.Round(mouseIsOverPoint.y, 4)}</color>)");
                     }
                 },
                 (rect) =>
