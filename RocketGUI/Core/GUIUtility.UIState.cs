@@ -59,12 +59,14 @@ namespace RocketGUI
 
             public void Restore()
             {
+                for (int i = 0; i < 3; i++)
+                {
+                    fonts[i].Restore();
+                }
                 GUI.color = color;
                 GUI.contentColor = contentColor;
                 GUI.backgroundColor = backgroundColor;
                 Text.WordWrap = wordWrap;
-                for (int i = 0; i < 3; i++)
-                    fonts[i].Restore();
             }
         }
 
