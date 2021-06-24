@@ -228,6 +228,24 @@ namespace RocketGUI
             Gap(height: 3.5f);
         }
 
+        protected virtual bool ButtonText(TaggedString text, bool disabled = false, bool drawBackground = false)
+        {
+            bool clicked = false;
+            GUIUtility.ExecuteSafeGUIAction(() =>
+            {
+                Text.Font = GameFont.Small;
+                Text.CurFontStyle.fontStyle = FontStyle.Normal;
+                RectSlice slice = Slice(text.GetTextHeight(insideWidth) + 4, includeMargins: true);
+                if (!drawBackground)
+                {
+                    Text.Anchor = TextAnchor.MiddleCenter;
+                    GUI.color = Mouse.IsOver(slice.inside) ? Color.white : Color.cyan;
+                }
+                clicked = Widgets.ButtonText(slice.inside, text, drawBackground);
+            });
+            return clicked;
+        }
+
         public virtual void End(ref Rect inRect)
         {
             Gap(height: 5);

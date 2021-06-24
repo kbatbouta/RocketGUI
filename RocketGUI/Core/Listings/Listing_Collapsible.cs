@@ -175,6 +175,15 @@ namespace RocketGUI
             base.Lambda(height, contentLambda, useMargins, fallback);
         }
 
+        public bool ButtonText(TaggedString text, bool disabled = false, bool invert = false, bool drawBackground = true)
+        {
+            if (invert == expanded)
+            {
+                return false;
+            }
+            return base.ButtonText(text, disabled, drawBackground);
+        }
+
         public void Gap(float height = 9f, bool invert = false)
         {
             if (expanded != invert)

@@ -23,6 +23,54 @@ namespace RocketGUI
             return rects;
         }
 
+        public static Rect SliceXPixels(this ref Rect inRect, float pixels)
+        {
+            Rect rect = new Rect(
+                inRect.x,
+                inRect.y,
+                Mathf.Min(inRect.width, pixels),
+                inRect.height
+            );
+            inRect.xMin += rect.width;
+            return rect;
+        }
+
+        public static Rect SliceYPixels(this ref Rect inRect, float pixels)
+        {
+            Rect rect = new Rect(
+                inRect.x,
+                inRect.y,
+                inRect.width,
+                Mathf.Min(inRect.height, pixels)
+            );
+            inRect.yMin += rect.height;
+            return rect;
+        }
+
+        public static Rect SliceXPart(this ref Rect inRect, float part)
+        {
+            Rect rect = new Rect(
+                inRect.x,
+                inRect.y,
+                inRect.width * part,
+                inRect.height
+            );
+            inRect.xMin += rect.width;
+            return rect;
+        }
+
+        public static Rect SliceYPart(this ref Rect inRect, float part)
+        {
+            Rect rect = new Rect(
+                inRect.x,
+                inRect.y,
+                inRect.width,
+                inRect.height * part
+            );
+            inRect.yMin += rect.height;
+            return rect;
+        }
+
         public static Rect[] Rows(this Rect rect, int pieces, float gap = 5f)
         {
             if (pieces <= 1)

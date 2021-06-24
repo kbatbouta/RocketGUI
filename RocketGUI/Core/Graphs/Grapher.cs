@@ -99,8 +99,9 @@ namespace RocketGUI
             set => collapsible.Group = value;
         }
 
-        public Grapher(string title, string description = null)
+        public Grapher(string title, float averageTimeBetweenPoints = 30, string description = null)
         {
+            this.points.MaxTWithoutAddtion = averageTimeBetweenPoints;
             this.title = title;
             this.description = description ?? string.Empty;
             this.header = new List<Action<Rect>>()

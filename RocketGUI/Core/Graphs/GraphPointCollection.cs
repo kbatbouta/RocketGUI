@@ -109,7 +109,7 @@ namespace RocketGUI
 
                 if (Length == points.Length
                     && lastPoint.t - points[(currentPosition + Length - 2) % points.Length].t < maxTWithoutAddtion
-                    && (Mathf.Abs(deltaY - curdeltaY) < 1e-2 || Mathf.Abs(point.y - lastPoint.y) < 1e-5)
+                    && (Mathf.Abs(deltaY - curdeltaY) < 1e-4 || Mathf.Abs(point.y - lastPoint.y) < 1e-5)
                     && point.color == lastPoint.color)
                 {
                     points[(currentPosition + Length - 1) % points.Length] = point;
