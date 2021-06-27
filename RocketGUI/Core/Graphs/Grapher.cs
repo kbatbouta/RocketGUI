@@ -150,18 +150,25 @@ namespace RocketGUI
 
         public void Plot(ref Rect inRect)
         {
-            if (pointsQueue.Count > 0)
+            if (collapsible.Expanded)
             {
-                foreach (GraphPoint point in pointsQueue)
+                if (pointsQueue.Count > 0)
                 {
-                    points.Add(point);
+                    foreach (GraphPoint point in pointsQueue)
+                    {
+                        points.Add(point);
+                    }
+                    points.Rebuild();
+                    pointsQueue.Clear();
                 }
-                points.Rebuild();
-                pointsQueue.Clear();
+                if (!points.Ready)
+                {
+                    return;
+                }
             }
             if (!points.Ready)
             {
-                return;
+                collapsible.Expanded = false;
             }
             collapsible.Begin(inRect, this.title);
 
