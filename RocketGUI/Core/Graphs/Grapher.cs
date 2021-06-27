@@ -150,37 +150,28 @@ namespace RocketGUI
 
         public void Plot(ref Rect inRect)
         {
-            if (collapsible.Expanded)
+            if (pointsQueue.Count > 0 && collapsible.Expanded)
             {
-                if (pointsQueue.Count > 0)
+                foreach (GraphPoint point in pointsQueue)
                 {
-                    foreach (GraphPoint point in pointsQueue)
-                    {
-                        points.Add(point);
-                    }
-                    points.Rebuild();
-                    pointsQueue.Clear();
+                    points.Add(point);
                 }
-                if (!points.Ready)
-                {
-                    return;
-                }
-            }
-            if (!points.Ready)
-            {
-                collapsible.Expanded = false;
+                points.Rebuild();
+                pointsQueue.Clear();
             }
             collapsible.Begin(inRect, this.title);
-
-            GUI.color = Color.white;
-            collapsible.Columns(15, this.header);
-            collapsible.Line(1);
-            collapsible.Lambda(100, this.Draw);
-
-            if (!description.NullOrEmpty())
+            if (points.Ready && points.Count > 24)
             {
+                GUI.color = Color.white;
+                collapsible.Columns(15, this.header);
                 collapsible.Line(1);
-                collapsible.Label(description);
+                collapsible.Lambda(100, this.Draw);
+
+                if (!description.NullOrEmpty())
+                {
+                    collapsible.Line(1);
+                    collapsible.Label(description);
+                }
             }
             collapsible.End(ref inRect);
         }
