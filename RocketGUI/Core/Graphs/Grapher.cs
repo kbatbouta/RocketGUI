@@ -10,7 +10,7 @@ namespace RocketGUI
 {
     public class Grapher
     {
-        public const int GraphMaxPointsNum = 256;
+        public const int GraphMaxPointsNum = 1500;
 
         public const int Scales = 4;
 
@@ -30,13 +30,13 @@ namespace RocketGUI
             }
         }
 
+        private List<GraphPoint> pointsQueue = new List<GraphPoint>();
+
         private GraphPointCollection points = new GraphPointCollection();
 
         private Listing_Collapsible collapsible = new Listing_Collapsible(scrollViewOnOverflow: false);
 
         private GraphPoint mouseIsOverPoint = new GraphPoint(0, 0, Color.white);
-
-        private int scaleIndex = 0;
 
         private bool mouseIsOver = false;
 
@@ -81,16 +81,10 @@ namespace RocketGUI
             get => points.MaxT;
         }
 
-        public float MaxTWithoutAddtion
+        public float TimeWindowSize
         {
-            get => points.MaxTWithoutAddtion;
-            set => points.MaxTWithoutAddtion = value;
-        }
-
-        public int ScaleIndex
-        {
-            get => scaleIndex;
-            set => scaleIndex = value;
+            get => points.TargetTimeWindowSize;
+            set => points.TargetTimeWindowSize = value;
         }
 
         public Listing_Collapsible.Group_Collapsible Group
@@ -99,9 +93,8 @@ namespace RocketGUI
             set => collapsible.Group = value;
         }
 
-        public Grapher(string title, float averageTimeBetweenPoints = 30, string description = null)
+        public Grapher(string title, string description = null)
         {
-            this.points.MaxTWithoutAddtion = averageTimeBetweenPoints;
             this.title = title;
             this.description = description ?? string.Empty;
             this.header = new List<Action<Rect>>()
@@ -117,8 +110,8 @@ namespace RocketGUI
                 {
                     if(mouseIsOver){
                         Text.Font = GameFont.Tiny;
-                        Text.Anchor = TextAnchor.MiddleLeft;
-                        Widgets.Label(rect , $"Current:(<color=cyan>{Math.Round(mouseIsOverPoint.t, 2)}</color>,<color=cyan>{Math.Round(mouseIsOverPoint.y, 4)}</color>)");
+                        Text.Anchor = TextAnchor.MiddleCenter;
+                        Widgets.Label(rect , $"Current:(<color=cyan>{Math.Round(mouseIsOverPoint.t, 4)}</color>,<color=cyan>{Math.Round(mouseIsOverPoint.y, 4)}</color>)");
                     }
                 },
                 (rect) =>
@@ -140,23 +133,33 @@ namespace RocketGUI
             this.Add(t, y, Color.cyan);
         }
 
-        public void Add(float t, float y, Color color, bool dirty = true)
+        public void Add(float t, float y, Color color)
         {
+
             GraphPoint point = new GraphPoint();
             point.t = t;
             point.y = y;
             point.color = color;
-            points.Add(point, dirty);
+            pointsQueue.Add(point);
         }
 
         public void Dirty()
         {
-            points.Dirty();
+            points.Rebuild();
         }
 
         public void Plot(ref Rect inRect)
         {
-            if (points.Length <= 4)
+            if (pointsQueue.Count > 0)
+            {
+                foreach (GraphPoint point in pointsQueue)
+                {
+                    points.Add(point);
+                }
+                points.Rebuild();
+                pointsQueue.Clear();
+            }
+            if (!points.Ready)
             {
                 return;
             }
@@ -178,6 +181,13 @@ namespace RocketGUI
         private void Draw(Rect rect)
         {
             Widgets.DrawBoxSolid(rect, Color.black);
+            if (!points.Ready)
+            {
+                Text.Font = GameFont.Small;
+                Text.Anchor = TextAnchor.MiddleCenter;
+                Widgets.Label(rect, "Preparing");
+                return;
+            }
             GUI.color = Color.white;
             Text.Font = GameFont.Tiny;
             Text.Anchor = TextAnchor.MiddleLeft;
